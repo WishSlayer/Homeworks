@@ -4,7 +4,6 @@ package HomeWork3;
 Например, строка "дом" встречается в строке "дом домик домой одомашненный" 4 раза
  */
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class SecondTask {
