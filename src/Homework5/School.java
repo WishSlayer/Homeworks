@@ -26,7 +26,6 @@ public class School {
         System.out.println("Создана " + name + " с директором " + director.getName());
     }
 
-
     public void schoolDay() {
         director.startLessons();
         for (int i = 0; i < students.length; i++) {
