@@ -2,7 +2,7 @@ package Homework5;
 
 public class School {
     private final String name;
-    private Director director;
+    private final Director director;
     private Student[] students;
     private Teacher[] teachers;
 
