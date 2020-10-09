@@ -1,10 +1,10 @@
 package Homework5;
 
 public class School {
-    protected final String name;
-    protected Director director;
-    protected Student[] students;
-    protected Teacher[] teachers;
+    private final String name;
+    private Director director;
+    private Student[] students;
+    private Teacher[] teachers;
 
     public School(String name, Director director) {
         if (name == null || name.trim().length() < 3 || director == null)

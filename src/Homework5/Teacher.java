@@ -20,7 +20,7 @@ public class Teacher extends Human implements TeachAble {
 
     @Override
     public void teach(Student student) {
-        if (student.studyingSubject == taughtSubject) {
+        if (student.studyingSubject.equals(taughtSubject)) {
             student.study();
             System.out.println("Учитель " + this.name
                     + " обучил студента " + student.name
