@@ -1,7 +1,7 @@
 package Homework5;
 
 public class Director extends Human {
-    protected boolean isStarted;
+    private boolean isStarted;
 
     public Director(String name, int age) {
         super(name, age);

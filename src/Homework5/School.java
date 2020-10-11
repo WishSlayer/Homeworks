@@ -30,9 +30,8 @@ public class School {
         director.startLessons();
         for (int i = 0; i < students.length; i++) {
             for (int j = 0; j < teachers.length; j++) {
-                if (students[i].studyingSubject == teachers[j].taughtSubject) {
+                if (students[i].getStudyingSubject().equalsIgnoreCase(teachers[j].getTaughtSubject()))
                     teachers[j].teach(students[i]);
-                }
             }
         }
         director.stopLessons();

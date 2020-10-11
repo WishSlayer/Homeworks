@@ -1,7 +1,7 @@
 package Homework5;
 
 public class Teacher extends Human implements TeachAble {
-    protected String taughtSubject;
+    private String taughtSubject;
 
     public Teacher(String name, int age, String taughtSubject) {
         super(name, age);
@@ -20,16 +20,10 @@ public class Teacher extends Human implements TeachAble {
 
     @Override
     public void teach(Student student) {
-        if (student.studyingSubject.equals(taughtSubject)) {
-            student.study();
-            System.out.println("Учитель " + this.name
-                    + " обучил студента " + student.name
-                    + " предмету " + taughtSubject
-                    + " и повысил уровень знаний студента до " + student.level);
-        }
-        else System.out.println("Учитель " + this.name
-                + " не может обучить студента " + student.name
+        student.study();
+        System.out.println("Учитель " + this.name
+                + " обучил студента " + student.name
                 + " предмету " + taughtSubject
-                + " так как предметы разные");
+                + " и повысил уровень знаний студента до " + student.getLevel());
     }
 }

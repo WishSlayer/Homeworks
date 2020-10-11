@@ -1,8 +1,8 @@
 package Homework5;
 
 public class Student extends Human implements StudyAble {
-    protected String studyingSubject;
-    protected int level = 0;
+    private String studyingSubject;
+    private int level;
 
     public Student(String name, int age, String studyingSubject) {
         super(name, age);
