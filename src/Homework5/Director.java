@@ -1,6 +1,6 @@
 package Homework5;
 
-public class Director extends Human {
+final public class Director extends Human {
     private boolean isStarted;
 
     public Director(String name, int age) {

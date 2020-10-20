@@ -1,4 +1,4 @@
-package AddPrimitiveMassiveCicli;
+package AdditionalTasks.AddPrimitiveMassiveCicli;
 /*
 В переменной n хранится натуральное трёхзначное число.
 Создайте программу, вычисляющую и выводящую на экран сумму цифр числа n.

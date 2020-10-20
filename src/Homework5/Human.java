@@ -6,7 +6,9 @@ abstract public class Human {
 
     public Human(String name, int age) {
         setName(name);
-        setAge(age);
+        if (age < 6)
+            throw new IllegalArgumentException("Возравст не может быть меньше 6 лет");
+        this.age = age;
     }
 
     public String getName() {
@@ -23,9 +25,4 @@ abstract public class Human {
         return age;
     }
 
-    public void setAge(int age) {
-        if (age < 6)
-            throw new IllegalArgumentException("Возравст не может быть меньше 6 лет");
-        this.age = age;
-    }
 }
