@@ -10,11 +10,11 @@ public final class Client {
     public Client(String name, String surname, String bornYear) {
         if (name == null || name.trim().length() < 3)
             throw new IllegalArgumentException("Имя не может быть null или короче 3 символов!");
-        this.name = name;
         if (surname == null || surname.trim().length() < 3)
             throw new IllegalArgumentException("Фамилия не может быть null или короче 3 символов!");
+        this.name = name;
         this.surname = surname;
-        this.birthday = LocalDate.parse(bornYear);
+        this.birthday = LocalDate.parse(bornYear, Const.formatter);
     }
 
     public String getName() {

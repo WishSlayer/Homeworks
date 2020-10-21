@@ -42,7 +42,29 @@ package Exams.Fitness;
 */
 public class Application {
     public static void main(String[] args) {
-        Client dmitriy = new Client("Дмитрий", "Сергеев", "2020");
-        Abonement abon1 = new Abonement(dmitriy, "22.05.2022", "Бассейн");
+        Fitness fitness = new Fitness();
+
+        Client dmitriy = new Client("Дмитрий", "Сергеев", "14.03.1987");
+        Client ksenya = new Client("Ксения", "Иванова", "03.09.1994");
+        Client irina = new Client("Ирина", "Петрова", "12.12.1977");
+        Client vova = new Client("Владимир", "Путин", "24.03.1992");
+        Client vasya = new Client("Василий", "Отрощенко", "22.04.1993");
+        Client kolya = new Client("Николай", "Саренко", "30.01.1988");
+
+        OnceAbonement abon1 = new OnceAbonement(dmitriy);
+        OnceAbonement abon2 = new OnceAbonement(ksenya);
+        DailyAbonement abon3 = new DailyAbonement(irina);
+        DailyAbonement abon4 = new DailyAbonement(vova);
+        FullAbonement abon5 = new FullAbonement(vasya);
+        FullAbonement abon6 = new FullAbonement(kolya);
+
+        fitness.addAbonement(abon1, Zones.GYM);
+        fitness.addAbonement(abon2, Zones.GYM);
+        fitness.addAbonement(abon3, Zones.WATERPOOL);
+        fitness.addAbonement(abon4, Zones.WATERPOOL);
+        fitness.addAbonement(abon5, Zones.GROUP_SPORT);
+        fitness.addAbonement(abon6, Zones.GROUP_SPORT);
+
+        fitness.getFullInfo();
     }
 }
