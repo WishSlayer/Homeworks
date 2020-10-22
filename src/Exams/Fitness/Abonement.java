@@ -23,7 +23,7 @@ public abstract class Abonement {
     }
 
     public String getAbonementInfo(){
-        return "Абонемент клиента " + this.client.getClientInfo();
+        return this.client.getClientInfo();
     }
 
     public void setCurrentZone(Zones currentZone) {

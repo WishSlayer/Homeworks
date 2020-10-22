@@ -66,5 +66,6 @@ public class Application {
         fitness.addAbonement(abon6, Zones.GROUP_SPORT);
 
         fitness.getFullInfo();
+        fitness.closeFitness();
     }
 }
