@@ -61,8 +61,8 @@ public class Application {
         fitness.addAbonement(abon1, Zones.GYM);
         fitness.addAbonement(abon2, Zones.GYM);
         fitness.addAbonement(abon3, Zones.WATERPOOL);
-        fitness.addAbonement(abon4, Zones.WATERPOOL);
-        fitness.addAbonement(abon5, Zones.GROUP_SPORT);
+        fitness.addAbonement(abon4, Zones.GROUP_SPORT);
+        fitness.addAbonement(abon5, Zones.WATERPOOL);
         fitness.addAbonement(abon6, Zones.GROUP_SPORT);
 
         fitness.getFullInfo();
