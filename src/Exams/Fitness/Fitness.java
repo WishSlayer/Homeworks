@@ -1,17 +1,14 @@
 package Exams.Fitness;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 public final class Fitness {
-    private final Abonement[] waterpoolClients = new Abonement[20];
+    private final Abonement[] waterPoolClients = new Abonement[20];
     private final Abonement[] gymClients = new Abonement[20];
     private final Abonement[] groupSportClients = new Abonement[20];
 
     public void closeFitness() {
-        for (Abonement waterpoolClient : waterpoolClients) {
-            if (waterpoolClient != null)
-                stopTraining(waterpoolClient);
+        for (Abonement waterPoolClient : waterPoolClients) {
+            if (waterPoolClient != null)
+                stopTraining(waterPoolClient);
         }
         for (Abonement gymClient : gymClients) {
             if (gymClient != null)
@@ -26,7 +23,6 @@ public final class Fitness {
 
     public void stopTraining(Abonement abonement) {
         if (abonement.getCurrentZone() != null) {
-            System.out.println(abonement.getAbonementInfo() + " - закончена регистрация в зоне " + abonement.getCurrentZone());
             switch (abonement.getCurrentZone()) {
                 case GYM: {
                     for (int i = 0; i < gymClients.length; i++) {
@@ -47,9 +43,9 @@ public final class Fitness {
                     }
                 }
                 case WATERPOOL: {
-                    for (int i = 0; i < waterpoolClients.length; i++) {
-                        if (abonement == waterpoolClients[i]) {
-                            waterpoolClients[i] = null;
+                    for (int i = 0; i < waterPoolClients.length; i++) {
+                        if (abonement == waterPoolClients[i]) {
+                            waterPoolClients[i] = null;
                             abonement.setCurrentZone(null);
                             break;
                         }
@@ -63,10 +59,10 @@ public final class Fitness {
         if (abonement == null)
             throw new IllegalArgumentException("Нельзя зарегистрировать абонемент равный null!");
 
-        if (checkAbonementZone(abonement, zone) && checkAbonemetDate(abonement)) {
+        if (checkAbonementZone(abonement, zone) && checkAbonementDateTime(abonement)) {
             if (abonement.getCurrentZone() == null) {
                 switch (zone) {
-                    case GYM : {
+                    case GYM: {
                         for (int i = 0; i < this.gymClients.length; i++) {
                             if (this.gymClients[i] == null) {
                                 this.gymClients[i] = abonement;
@@ -91,13 +87,13 @@ public final class Fitness {
                         break;
                     }
                     case WATERPOOL: {
-                        for (int i = 0; i < this.waterpoolClients.length; i++) {
-                            if (this.waterpoolClients[i] == null) {
-                                this.waterpoolClients[i] = abonement;
+                        for (int i = 0; i < this.waterPoolClients.length; i++) {
+                            if (this.waterPoolClients[i] == null) {
+                                this.waterPoolClients[i] = abonement;
                                 abonement.setCurrentZone(Zones.WATERPOOL);
                                 break;
                             }
-                            if (i == this.waterpoolClients.length - 1)
+                            if (i == this.waterPoolClients.length - 1)
                                 System.out.println("Зона " + zone + " заполнена!");
                         }
                         break;
@@ -122,11 +118,9 @@ public final class Fitness {
         return false;
     }
 
-    private boolean checkAbonemetDate(Abonement abonement) {
-        LocalDate currentDate = Const.startDate;
-        LocalTime currentTime = Const.startTime;
-        if (currentDate.isBefore(abonement.finishDate) || currentDate.isEqual(abonement.finishDate)) {
-            if (currentTime.isAfter(abonement.startTraining) && currentTime.isBefore(abonement.finishTraining))
+    private boolean checkAbonementDateTime(Abonement abonement) {
+        if (Const.startDate.isBefore(abonement.finishDate) || Const.startDate.isEqual(abonement.finishDate)) {
+            if (Const.startTime.isAfter(abonement.startTraining) && Const.startTime.isBefore(abonement.finishTraining))
                 return true;
             else {
                 System.out.println(abonement.getAbonementInfo() + " - доступ запрещен, так как время посещения не соответствует");
@@ -139,40 +133,40 @@ public final class Fitness {
         }
     }
 
-    public void getInfoGym(){
+    public void getInfoGym() {
         StringBuilder sb = new StringBuilder();
         sb.append("В настоящее время в тренажерном зале зарегистрированы: \n");
-        for (Abonement abonement : gymClients) {
-            if (abonement != null)
-                sb.append(abonement.getAbonementInfo()).append("\n");
+        for (Abonement gymClient : gymClients) {
+            if (gymClient != null)
+                sb.append(gymClient.getAbonementInfo()).append("\n");
         }
         System.out.println(sb.toString());
     }
 
-    public void getInfoWaterpool(){
+    public void getInfoWaterPool() {
         StringBuilder sb = new StringBuilder();
         sb.append("В настоящее время в бассейне зарегистрированы: \n");
-        for (Abonement abonement : waterpoolClients) {
-            if (abonement != null)
-                sb.append(abonement.getAbonementInfo()).append("\n");
+        for (Abonement waterPoolClient : waterPoolClients) {
+            if (waterPoolClient != null)
+                sb.append(waterPoolClient.getAbonementInfo()).append("\n");
         }
         System.out.println(sb.toString());
     }
 
-    public void getInfoGroupSport(){
+    public void getInfoGroupSport() {
         StringBuilder sb = new StringBuilder();
         sb.append("В настоящее время на групповых занятиях зарегистрированы: \n");
-        for (Abonement abonement : groupSportClients) {
-            if (abonement != null)
-                sb.append(abonement.getAbonementInfo()).append("\n");
+        for (Abonement groupSportClient : groupSportClients) {
+            if (groupSportClient != null)
+                sb.append(groupSportClient.getAbonementInfo()).append("\n");
         }
         System.out.println(sb.toString());
     }
 
-    public void getFullInfo(){
+    public void getFullInfo() {
         System.out.println("Информация о посетителях фитнес клуба: ");
         getInfoGym();
-        getInfoWaterpool();
+        getInfoWaterPool();
         getInfoGroupSport();
     }
 
