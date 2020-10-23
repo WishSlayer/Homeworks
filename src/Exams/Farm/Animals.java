@@ -2,19 +2,19 @@ package Exams.Farm;
 
 public abstract class Animals {
     protected final String name;
-    protected final int weight;
-    protected final int speed;
+    protected int weight;
+    protected int speed;
+    protected final int minWeight = 3;
+    protected final int maxWeight = 30;
+    protected final int minSpeed = 15;
+    protected final int maxSpeed = 30;
 
-    public Animals(String name, int weight, int speed) {
+    public Animals(String name) {
         if (name == null || name.trim().length() < 3)
             throw new IllegalArgumentException("Имя животного не может быть null или короче 3-ех символов!");
-        if (weight <= 2 || weight >= 100)
-            throw new IllegalArgumentException("Вес животного не может быть <= 2 и >= 100 кг!");
-        if (speed <= 15 || speed >= 30)
-            throw new IllegalArgumentException("Скорость животного не может <= 15 или >= 30 км/ч!");
         this.name = name;
-        this.weight = weight;
-        this.speed = speed;
+        setWeight();
+        setSpeed();
     }
 
     public String getName() {
@@ -29,4 +29,11 @@ public abstract class Animals {
         return speed;
     }
 
+    public void setWeight() {
+        this.weight = minWeight + (int) (Math.random() * ((maxWeight - minWeight) + 1));
+    }
+
+    public void setSpeed() {
+        this.speed = minSpeed + (int) (Math.random() * ((maxSpeed - minSpeed) + 1));
+    }
 }

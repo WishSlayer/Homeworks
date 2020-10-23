@@ -3,15 +3,31 @@ package Exams.Farm;
 public abstract class HomeAnimals extends Animals implements HomeAnimalsAble {
     protected int health;
     protected int resourceCount;
+    protected final int minHealth = 1;
+    protected final int maxHealth = 100;
+    protected final int minResourceCount = 1;
+    protected final int maxResourceCount = 20;
 
-    public HomeAnimals(String name, int weight, int speed, int health, int resourceCount) {
-        super(name, weight, speed);
-        if (health <= 0 || health >= 200)
-            throw new IllegalArgumentException("Здоровье животного не может <= 0 или >= 200 пунктов!");
-        if (resourceCount <= 0 || resourceCount >= 50)
-            throw new IllegalArgumentException("Количество ресурсов животного не может <= 0 или >= 50 пунктов!");
-        this.health = health;
-        this.resourceCount = resourceCount;
+    public HomeAnimals(String name) {
+        super(name);
+        setHealth();
+        setResourceCount();
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getResourceCount() {
+        return resourceCount;
+    }
+
+    public void setHealth() {
+        this.health = minHealth + (int) (Math.random() * ((maxHealth - minHealth) + 1));
+    }
+
+    public void setResourceCount() {
+        this.resourceCount = minResourceCount + (int) (Math.random() * ((maxResourceCount - minResourceCount) + 1));
     }
 
     @Override

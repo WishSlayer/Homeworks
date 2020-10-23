@@ -40,6 +40,14 @@ package Exams.Farm;
 */
 public class Application {
     public static void main(String[] args) {
+        Cat cat1 = new Cat("Кот Вася");
+
+        System.out.println("Имя: " + cat1.getName());
+        System.out.println("Скорость: " + cat1.getSpeed());
+        System.out.println("Вес: " + cat1.getWeight());
+        System.out.println("Здоровье: " + cat1.getHealth());
+        System.out.println("Кол-во ресурсов: " + cat1.getResourceCount());
+        System.out.println("Съедобное: " + cat1.isCanBeEaten());
 
     }
 }

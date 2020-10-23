@@ -1,13 +1,17 @@
 package Exams.Farm;
 
 public class WildAnimals extends Animals implements WildAnimalsAble {
-    private final int strength;
+    private int strength;
+    private final int minStrength = 2;
+    private final int maxStrength = 30;
 
-    public WildAnimals(String name, int weight, int speed, int strength) {
-        super(name, weight, speed);
-        if (strength <= 0 || strength >= 30)
-            throw new IllegalArgumentException("Сила животного не может <= 0 или >= 30 Н!");
+    public WildAnimals(String name) {
+        super(name);
         this.strength = strength;
+    }
+
+    public void setStrength() {
+        this.strength = minStrength + (int) (Math.random() * ((maxStrength - minStrength) + 1));
     }
 
     @Override
