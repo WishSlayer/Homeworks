@@ -8,16 +8,30 @@ package HomeWork8;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TreeSet;
 
 public class Employee {
     public static void main(String[] args) {
-        System.out.println(Employee.employeeGenerator(4).toString());
-        System.out.println("Отсортированный по имени: ");
-        Comparator<Employee> employeeComparator = new NameComparator();
-        TreeSet<Employee> employeesNameTreeSet = new TreeSet<>(employeeComparator);
-        System.out.println(employeesNameTreeSet);
+        List<Employee> employeeList = employeeGenerator(4);
+        System.out.println(employeeList.toString());
 
+        System.out.println("Отсортированный по имени: ");
+        Comparator<Employee> employeeNameComparator = new NameComparator();
+        employeeList.sort(employeeNameComparator);
+        System.out.println(employeeList);
+
+        System.out.println("Отсортированный по имени и зарплате: ");
+        Comparator<Employee> employeeNameSalaryComparator = new NameComparator()
+                .thenComparing(new SalaryComparator());
+        employeeList.sort(employeeNameSalaryComparator);
+        System.out.println(employeeList);
+
+        System.out.println("Отсортированный по имени, зарплате, возрасту и компании: ");
+        Comparator<Employee> employeeNameSalaryAgeCompanyComparator = new NameComparator()
+                .thenComparing(new SalaryComparator())
+                .thenComparing(new AgeComparator())
+                .thenComparing(new CompanyComparator());
+        employeeList.sort(employeeNameSalaryAgeCompanyComparator);
+        System.out.println(employeeList);
     }
 
     private final String name;
