@@ -7,29 +7,26 @@ public class MessageTask {
     public static void countEachPriority(List<Message> messageList) {
         // TODO:  Подсчитать количество сообщений для каждого приоритела
         //  Ответ в консоль
-        int lowPriority = 0;
-        int mediumPriority = 0;
-        int highPriority = 0;
-        int urgentPriority = 0;
+        int[] priorityMassive = new int[MessagePriority.values().length];
         for (Message message : messageList) {
             switch (message.getPriority()) {
                 case LOW:
-                    lowPriority++;
+                    priorityMassive[0]++;
                     break;
                 case MEDIUM:
-                    mediumPriority++;
+                    priorityMassive[1]++;
                     break;
                 case HIGH:
-                    highPriority++;
+                    priorityMassive[2]++;
                     break;
                 case URGENT:
-                    urgentPriority++;
+                    priorityMassive[3]++;
             }
         }
-        System.out.println("Кол-во LOW: " + lowPriority +
-                "; Кол-во MEDIUM: " + mediumPriority +
-                "; Кол-во HIGH: " + highPriority +
-                "; Кол-во URGENT: " + urgentPriority);
+        System.out.println("Кол-во LOW: " + priorityMassive[0] +
+                "; Кол-во MEDIUM: " + priorityMassive[1] +
+                "; Кол-во HIGH: " + priorityMassive[2] +
+                "; Кол-во URGENT: " + priorityMassive[3]);
     }
 
     public static void countEachCode(List<Message> messageList) {
