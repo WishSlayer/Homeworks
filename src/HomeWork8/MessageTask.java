@@ -9,19 +9,7 @@ public class MessageTask {
         //  Ответ в консоль
         int[] priorityMassive = new int[MessagePriority.values().length];
         for (Message message : messageList) {
-            switch (message.getPriority()) {
-                case LOW:
-                    priorityMassive[0]++;
-                    break;
-                case MEDIUM:
-                    priorityMassive[1]++;
-                    break;
-                case HIGH:
-                    priorityMassive[2]++;
-                    break;
-                case URGENT:
-                    priorityMassive[3]++;
-            }
+            priorityMassive[message.getPriority().ordinal()]++;
         }
         System.out.println("Кол-во LOW: " + priorityMassive[0] +
                 "; Кол-во MEDIUM: " + priorityMassive[1] +
@@ -44,6 +32,18 @@ public class MessageTask {
             System.out.print("Code " + code + ": " + count + "; ");
         }
         System.out.println("");
+
+        // через мапу
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (Message message : messageList) {
+            hashMap.put(message.getCode(),
+                    hashMap.getOrDefault(message.getCode(), 0) + 1);
+            // 2 вариант
+            if (!hashMap.containsKey(message.getCode())) {
+                hashMap.put(message.getCode(), hashMap.get(message.getCode() + 1));
+            }
+            else hashMap.put(message.getCode(), 1);
+        }
     }
 
     public static void uniqueMessageCount(List<Message> messageList) {
@@ -61,6 +61,8 @@ public class MessageTask {
         LinkedHashSet<Message> linkedHashSet = new LinkedHashSet<>(messageList);
         List<Message> messageList1 = new ArrayList<>(linkedHashSet);
         return messageList1;
+        // return new ArrayList<>(new LinkedHashSet<>(messageList));
+        // создается LinkedHashSet с элементами messageList, далее закидываем в ArrayList
     }
 
     public static void removeEach(List<Message> messageList, MessagePriority priority){

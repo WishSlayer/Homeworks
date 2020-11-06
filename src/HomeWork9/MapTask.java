@@ -51,6 +51,7 @@ public class MapTask {
         customerMap.put("4", new Customer("Евгения", "4", 67));
 
         System.out.println(usersAgeIntervalMap(customerMap, 20, 50));
+        System.out.println();
 
         // TODO:: Задания по тексту (text). На каждый пункт - минимум один метод:
         //  1. написать метод, принимающий на вход слово и возвращающий частоту встречаемости данного слова в тексте
@@ -67,6 +68,8 @@ public class MapTask {
                 "uncover many web sites still uncover in their infancy Various versions uncover have evolved over the years uncover sometimes by accident" +
                 " sometimes on purpose injected humour and the like";
 
+        System.out.println("Кол-во повторений слова в тексте: " + getWordFrequency(text, "that"));
+        System.out.println("Группы по кол-ву букв: " + getWordsByGroup(text));
     }
 
     public static HashMap<String, Customer> getByAge(
@@ -89,7 +92,7 @@ public class MapTask {
     public static List<String> getLoginListFromCity(HashMap<String, String> hashMap, String city) {
         List<String> loginListFromCity = new ArrayList<>();
         for(Map.Entry<String, String> entry : hashMap.entrySet()) {
-            if (entry.getValue().equals(city))
+            if (entry.getValue().equalsIgnoreCase(city))
                 loginListFromCity.add(entry.getKey());
         }
         return loginListFromCity;
@@ -128,9 +131,52 @@ public class MapTask {
     }
 
     // TODO:: Задания по тексту (text). На каждый пункт - минимум один метод:
+
     //  1. написать метод, принимающий на вход слово и возвращающий частоту встречаемости данного слова в тексте
+    public static int getWordFrequency(String text, String word) {
+        String[] words = text.split(" ");
+        int count = 0;
+        for (String s : words) {
+            if (s.equalsIgnoreCase(word))
+                count++;
+        }
+        return count;
+    }
+
     //  2. написать метод, который собирает все слова в группы по количеству букв:
     //  например, в одну группу попадут слова: 3 - [the, war, jar, get, met...], в другую 2 - [on, up, no, of...]
+    private static Map<Integer, Set<String>> getWordsByGroup(String text) {
+        Map<Integer, Set<String>> wordsByLettersCount = new TreeMap<>();
+        String[] words = text.trim().toLowerCase().split(" ");
+        for (String word : words) {
+            Set<String> strings = wordsByLettersCount.getOrDefault(word.length(), new HashSet<>());
+            strings.add(word);
+            wordsByLettersCount.put(word.length(), strings);
+        }
+        return wordsByLettersCount;
+    }
+
     //  3. написать метод, который выводит в консоль топ 10 самых частых слов
+    private static void printWords(String text) {
+        String[] words = text.trim().toLowerCase().split(" ");
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        for (String word : words) {
+            hashMap.put(word, hashMap.getOrDefault(word, 0) + 1);
+        }
+        TreeSet<Map.Entry<String, Integer>> entries = new TreeSet<>(new ValueComparator());
+        entries.addAll(hashMap.entrySet());
+        // вывод в консоль
+    }
+
     //  4. Вывести частоту встречаемости букв анг алфавита в данном тексте. Вывести в процентах для каждой буквы
+
+
+}
+
+class ValueComparator implements Comparator<Map.Entry<String, Integer>>{
+    @Override
+    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+        if (o1.getValue().equals(o2.getValue())) return -1;
+        return Integer.compare(o1.getValue(), o2.getValue());
+    }
 }
