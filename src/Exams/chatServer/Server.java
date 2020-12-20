@@ -3,20 +3,20 @@ package Exams.chatServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
-public class Server {
+public final class Server {
+
     private LinkedBlockingQueue<ServerMessage> readMessages = new LinkedBlockingQueue<>();
     private CopyOnWriteArraySet<Connection> connections = new CopyOnWriteArraySet<>();
-    private final String stopConnection = "/exit";
+    private final String stop = "/exit";
 
-    public void startServer(){
+    public void start(){
         ServerSocket serverSocket;
         try {
-            serverSocket = new ServerSocket(8090);
+            serverSocket = new ServerSocket(8080);
         } catch (IOException e) {
-            System.out.println("Не удалось открыть серверный сокет");
+            System.out.println("Не удалось открыть серверный сокет!");
             e.printStackTrace();
             return;
         }
@@ -47,10 +47,10 @@ public class Server {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Message message = connection.readMessage();
-                    if (stopConnection.equalsIgnoreCase(message.getMessageText())) {
-                        System.out.println(message.getMessageSender() + " отключился");
+                    if (stop.equalsIgnoreCase(message.getData())) {
+                        System.out.println(message.getSenderName() + " отключился от сервера");
                         connections.remove(connection);
-                        connection.writeMessage(Message.getMessage("SERVER", "disconnect"));
+                        connection.sendMessage(Message.getMessage("SERVER", "disconnect"));
                         connection.close();
                         break;
                     }
@@ -64,7 +64,7 @@ public class Server {
         }
     }
 
-    private class ServerWriter implements Runnable {
+    private class ServerWriter implements Runnable{
         @Override
         public void run() {
             while (!Thread.currentThread().isInterrupted()){
@@ -72,7 +72,7 @@ public class Server {
                     ServerMessage fromQueue = readMessages.take();
                     for (Connection connection : connections) {
                         if (!fromQueue.getConnection().equals(connection))
-                            connection.writeMessage(fromQueue.getMessage());
+                            connection.sendMessage(fromQueue.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -82,7 +82,7 @@ public class Server {
         }
     }
 
-    private class ServerMessage {
+    private class ServerMessage{
         private Message message;
         private Connection connection;
 
@@ -101,6 +101,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        new Server().startServer();
+        new Server().start();
     }
+
 }

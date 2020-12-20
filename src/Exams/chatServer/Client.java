@@ -1,77 +1,84 @@
 package Exams.chatServer;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Client {
     private Connection connection;
     private String clientName;
-    private boolean isOpen;
     private final Scanner scanner = new Scanner(System.in);
-    private static String serverIp = "localhost";
-    private static int serverPort = 8090;
 
     public Client() {
-        try {
-            this.connection = new Connection(new Socket(serverIp, serverPort));
-            this.isOpen = true;
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        Properties properties = new Properties();
+        try (InputStream input = Client.class.
+                getClassLoader().getResourceAsStream("client.properties")){
+            properties.load(input);
+            this.connection = new Connection(new Socket(properties.getProperty("ip"),
+                    Integer.parseInt(properties.getProperty("port"))));
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public void clientApplicationStart() {
+    public void clientAppStart(){
         new Thread(new Writer()).start();
         new Thread(new Reader()).start();
     }
 
-    public class Reader implements Runnable {
+    private class Reader implements Runnable {
         @Override
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    if (connection.getInputStream().available() > 0) {
-                        Message readMessage =  connection.readMessage();
-                        System.out.println(readMessage);
+                    Message read = connection.readMessage();
+                    if(!("SERVER".equalsIgnoreCase(read.getSenderName())
+                            && "disconnect".equalsIgnoreCase(read.getData()))){
+                        System.out.println(read);
+                    } else {
+                        System.out.println("Отключение от сервера");
+                        break;
                     }
-                } catch (IOException | ClassNotFoundException ioException) {
-                    ioException.printStackTrace();
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                     Thread.currentThread().interrupt();
                 }
-                if (!isOpen) break;
             }
         }
     }
 
-    public class Writer implements Runnable {
+    private class Writer implements Runnable{
         @Override
         public void run() {
-            System.out.println("Введите Ваше имя: ");
-            clientName = scanner.nextLine();
             while (true) {
-                System.out.println("Введите сообщение: ");
-                String messageText = scanner.nextLine();
-                Message sendMessage = Message.getMessage(Client.this.clientName, messageText);
-                sendMessage.setMessageDateTimeSend();
+                System.out.println("Введите ваше имя: ");
+                String string = scanner.nextLine();
+                if ("server".equalsIgnoreCase(string)){
+                    System.out.println("Нельзя использовать данное имя!!!");
+                } else {
+                    clientName = string;
+                    break;
+                }
+            }
+            while (!Thread.currentThread().isInterrupted()) {
+                System.out.println("Введите текст сообщения: ");
+                String text = scanner.nextLine();
+                Message newMessage = Message.getMessage(Client.this.clientName, text);
                 try {
-                    connection.writeMessage(sendMessage);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                    connection.sendMessage(newMessage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                }
+                if ("/exit".equalsIgnoreCase(text)) {
+                    break;
                 }
             }
         }
     }
 
     public static void main(String[] args) {
-        new Client().clientApplicationStart();
+        new Client().clientAppStart();
     }
 }

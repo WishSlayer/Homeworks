@@ -7,45 +7,34 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public final class Connection implements Closeable {
-    private final Socket socketConnection;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
-    private boolean isClosed;
+    private final Socket socket;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
 
-    public Connection(Socket socketConnection) {
-        isClosed = false;
-        this.socketConnection = socketConnection;
+    public Connection (Socket socket){
+        this.socket = socket;
         try {
-            inputStream = new ObjectInputStream(this.socketConnection.getInputStream());
-            outputStream = new ObjectOutputStream(this.socketConnection.getOutputStream());
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+            output = new ObjectOutputStream(this.socket.getOutputStream());
+            input = new ObjectInputStream(this.socket.getInputStream());
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 
-    public ObjectInputStream getInputStream() {
-        return inputStream;
-    }
-
-    public ObjectOutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    public void writeMessage(Message message) throws IOException {
-        message.setMessageDateTimeSend();
-        outputStream.writeObject(message);
-        outputStream.flush();
+    public void sendMessage(Message message) throws IOException {
+        message.setTime();
+        output.writeObject(message);
+        output.flush();
     }
 
     public Message readMessage() throws IOException, ClassNotFoundException {
-        return (Message) inputStream.readObject();
+        return (Message) input.readObject();
     }
 
     @Override
     public void close() throws IOException {
-        inputStream.close();
-        outputStream.close();
-        socketConnection.close();
-        isClosed = true;
+        input.close();
+        output.close();
+        socket.close();
     }
 }

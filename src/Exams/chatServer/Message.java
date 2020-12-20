@@ -2,51 +2,38 @@ package Exams.chatServer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Message implements Serializable {
-    private LocalDateTime messageDateTimeSend;
-    private String messageSender;
-    private String messageText;
+    private String senderName;
+    private String msgText;
+    private LocalDateTime dateTime;
 
-    public Message(String messageSender, String messageText) {
-        this.messageSender = messageSender;
-        this.messageText = messageText;
+    private Message(String sender, String msgText) {
+        this.senderName = sender;
+        this.msgText = msgText;
     }
 
-    public LocalDateTime getMessageDateTimeSend() {
-        return messageDateTimeSend;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public void setMessageDateTimeSend() {
-        this.messageDateTimeSend = LocalDateTime.now();
+    public String getData() {
+        return msgText;
     }
 
-    public String getMessageSender() {
-        return messageSender;
+    public void setTime() {
+        this.dateTime = LocalDateTime.now();
     }
 
-    public void setMessageSender(String messageSender) {
-        this.messageSender = messageSender;
-    }
-
-    public String getMessageText() {
-        return messageText;
-    }
-
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
-
-    public static Message getMessage(String messageSender, String messageText) {
-        return new Message(messageSender, messageText);
+    public static Message getMessage(String sender, String data){
+        return new Message(sender, data);
     }
 
     @Override
     public String toString() {
-        return "Message{" +
-                "messageDateTimeSend=" + messageDateTimeSend +
-                ", messageSender=" + messageSender +
-                ", messageText='" + messageText + '\'' +
-                '}';
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd.MM.yyyy");
+        return "Сообщение от клиента: " + senderName + ","
+                + "  Дата и время отправления: " + msgText + " (" + dateTime.format(formatter) + ")";
     }
 }
